@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { getMyBlogs, deleteBlog } from '@/api/axios/blogs';
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from "@/components/ui/alert-dialog";
 import Paginations from "@/components/Paginations";
+import BlogSkeleton from '@/components/BlogSkeleton';
 
 const Myblog = () => {
   const [blogs, setBlogs] = useState([]);
@@ -11,31 +12,35 @@ const Myblog = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [blogToDelete, setBlogToDelete] = useState(null);
   const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(1);
   const [search, setSearch] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const menuRef = useRef(null);
   const navigate = useNavigate();
-
-  // Debounce search input
+ 
   useEffect(() => {
     const handler = setTimeout(() => {
       setPage(1);
       setSearch(searchInput.trim());
-    }, 400); // 400ms debounce
+    }, 400);  
 
     return () => clearTimeout(handler);
   }, [searchInput]);
 
-  // Fetch blogs with pagination and search
+  
   useEffect(() => {
-    getMyBlogs({ page, search }).then(res => {
-      setBlogs(res.posts);
-      setTotalPages(res.totalPages);
-    }).catch(() => setBlogs([]));
+    setIsLoading(true);
+    getMyBlogs({ page, search })
+      .then((res) => {
+        setBlogs(res.posts);
+        setTotalPages(res.totalPages);
+      })
+      .catch(() => setBlogs([]))
+      .finally(() => setIsLoading(false));
   }, [page, search]);
 
-  // Close menu on outside click
+  
   useEffect(() => {
     function handleClickOutside(event) {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -99,10 +104,16 @@ const Myblog = () => {
       </div>
       {/* Blog Cards */}
       <div className="flex flex-col items-center gap-4 px-2 pb-8">
-        {blogs.length === 0 && (
+         {isLoading ? (
+          <>
+            <BlogSkeleton />
+            <BlogSkeleton />
+            <BlogSkeleton />
+          </>
+        ) : blogs.length === 0 ? (
           <div className="text-gray-500 mt-10">No blogs found.</div>
-        )}
-        {blogs.map((blog) => (
+        ) : (
+        blogs.map((blog) => (
           <div
             key={blog._id}
             className="w-full max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl bg-gray-100 p-3 sm:p-4 rounded-md flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-4 shadow relative"
@@ -142,7 +153,7 @@ const Myblog = () => {
               )}
             </div>
           </div>
-        ))}
+        )))}
       </div>
 
       {/* Pagination below the blog list */}
