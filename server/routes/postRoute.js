@@ -1,0 +1,12 @@
+import express from "express";
+import { createPost,upload, getAllPosts, getPostById, updatePost, deletePost,getUserPosts } from "../controller/postController.js";
+import  verifyToken  from "../middleware/verifyUser.js";
+import optionalAuth from "../middleware/optionalAuth.js";
+const router = express.Router();
+router.get('/',optionalAuth, getAllPosts);
+router.get('/user/me', verifyToken, getUserPosts);
+router.get('/:id', getPostById);
+router.post("/create", verifyToken, upload.single("thumbnail"), createPost);
+router.put('/:id', verifyToken, upload.single("thumbnail"), updatePost);
+router.delete('/:id', verifyToken, deletePost);
+export default router;
