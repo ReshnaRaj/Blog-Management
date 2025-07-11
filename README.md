@@ -1,12 +1,36 @@
-Mini Blog Platform
+MINI BLOG MANAGEMENT 
 
-A clean and modern full-stack blog platform where users can securely register, log in, and manage blog posts. The platform supports rich features like JWT-based authentication, form validation using Form and Yup, image uploads via Cloudinary.
-🔐 JWT Authentication – Secure login, token storage, and protected routes.
+FRONTEND:
 
-✍️ Blog Management – Create, edit, delete, and view blogs.
+React.js
+Redux Toolkit
+ShadCN/UI + Tailwind CSS
+React Router DOM
+Toastify for notifications
+BACKEND:
 
-📄 Detailed Blog View – Read full blog content with author and timestamp.
+Node.js
 
-📱 Responsive Design – Mobile-friendly and accessible UI.
+Express.js
 
-☁️ Cloudinary Uploads – Upload and store images securely in the cloud.
+MongoDB (Mongoose)
+
+JWT (JSON Web Tokens) for Authentication
+
+CORS
+
+dotenv for environment config
+
+Secure User Authentication
+
+Persistent Local Storage Integration
+
+Modern and Responsive UI using ShadCN + Tailwind
+
+RESTful API Integration
+
+TO RUN THE PROJECT:
+
+CLIENT-->npm run dev
+
+SERVER--->npm run dev
