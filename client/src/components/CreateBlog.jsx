@@ -101,6 +101,7 @@ const CreateBlog = () => {
   };
 
   const handleCancel = () => {
+    navigate("/my-blogs");
     setTitle("");
     setContent("");
     setThumbnail(null);
